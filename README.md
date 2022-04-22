@@ -1,11 +1,6 @@
 # docker-desafio-node
 Repositório do Desafio Nginx com Node.js do Módulo de Docker - Curso Full Cycle 3.0
 
-# Imagem Publicada
-
-* Nome da imagem: auluisi/
-* Docker hub: 
-
 # Enunciado
 Nesse desafio você colocará em prática o que aprendemos em relação a utilização do nginx como proxy reverso. A idéia principal é que quando um usuário acesse o nginx, o mesmo fará uma chamada em nossa aplicação node.js. Essa aplicação por sua vez adicionará um registro em nosso banco de dados mysql, cadastrando um nome na tabela people.
 
