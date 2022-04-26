@@ -1,0 +1,52 @@
+version: '3'
+
+services: 
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: auluisi/nginx:prod
+    container_name: nginx
+    networks:
+      - desafio-net
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+    container_name: app-nodejs
+    command: sh -c "node index.js"
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    networks: 
+      - desafio-net
+    volumes:
+      - ./node:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+    networks: 
+      - desafio-net
+
+networks:
+  desafio-net:
+    driver: bridge
